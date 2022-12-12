@@ -1,13 +1,15 @@
 import { Modal } from './UI/Modal'
 // 모달 모듈 추가
 import { Map } from './UI/Map'
+import { getCoordsFromAddress } from './Utility/Location'
+
 class PlaceFinder {
     constructor() { // 생성자 함수
-        const addressForm = document.querySelectorAll('form');
+        const addressForm = document.querySelector('form');
         const locateUserBtn = document.getElementById('locate-btn');
 
         locateUserBtn.addEventListener("click", this.locateUserHandler.bind(this));
-        //addressForm.addEventListener("submit", this.findAddressHandler.bind(this));
+        addressForm.addEventListener("submit", this.findAddressHandler.bind(this));
     }
 
     selectPlace(coordinates) {
@@ -47,7 +49,28 @@ class PlaceFinder {
 
     }
 
-    //findAddressHandler()
+    async findAddressHandler(event) {
+        event.preventDefault();
+        const address = event.target.querySelector('input').value;
+        if (!address || address.trim().length === 0) {
+            alert('이용할수 없는 주소입니다. 다시 시도해주세요!');
+            return;
+        }
+
+        const modal = new Modal('loading-modal-content', 'Loading location - 기다려 주세요!');
+        modal.show();
+        // async, await 함수는 promise를 반환해!
+        try {
+            const coordinates = await getCoordsFromAddress(address);
+            this.selectPlace(coordinates);
+        } catch (err) {
+            alert(err.message);
+        }
+        modal.hide();
+
+
+
+    }
 
 
 

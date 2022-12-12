@@ -4,7 +4,6 @@ export class Map {
         this.render(coords);
 
     }
-
     render(coordinates) {
         if (!google) {
             alert("구글맵을 로드할수 없습니다. 다음에 다시 시도해주세요!")
