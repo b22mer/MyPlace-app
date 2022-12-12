@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -8,48 +9,49 @@
     <link rel="stylesheet" href="assets/styles/app.css" />
     <link rel="stylesheet" href="assets/styles/share-place.css" />
     <script src="assets/scripts/SharePlace.js" defer></script>
-  </head>
-  <body>
+</head>
+
+<body>
+
+    <!-- 모달 컨테이너 -->
     <template id="modal-template">
       <div class="backdrop"></div>
       <div class="modal"></div>
     </template>
+
+    <!-- 모달에 들어갈 컨텐츠들 -->
     <template id="loading-modal-content">
       <div class="modal__content centered">
-        <div class="lds-dual-ring"></div>
+        <div class="lds-dual-ring"></div> 
+        <!-- 로딩 스피너 -->
       </div>
     </template>
 
     <header>
-      <h1>Share a Place!</h1>
+        <h1>Share a Place!</h1>
     </header>
 
     <section id="selected-place">
-      <div id="map">
-        <p>
-          You haven't selected any place yet. Please enter an address or locate
-          yourself!
-        </p>
-      </div>
+        <div id="map">
+            <p>
+                You haven't selected any place yet. Please enter an address or locate yourself!
+            </p>
+        </div>
     </section>
 
     <section id="share-controls">
-      <input
-        id="share-link"
-        type="text"
-        readonly
-        value="Select a place to get a sharable link."
-      />
-      <button id="share-btn" disabled>Share Place</button>
+        <input id="share-link" type="text" readonly value="Select a place to get a sharable link." />
+        <button id="share-btn" disabled>Share Place</button>
     </section>
 
     <section id="place-data">
-      <form>
-        <label for="address">Address</label>
-        <input type="text" />
-        <button type="submit">Find Place</button>
-      </form>
-      <button id="locate-btn">Get Current Location</button>
+        <form>
+            <label for="address">Address</label>
+            <input type="text" />
+            <button type="submit">Find Place</button>
+        </form>
+        <button id="locate-btn">Get Current Location</button>
     </section>
-  </body>
+</body>
+
 </html>
