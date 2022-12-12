@@ -1,15 +1,23 @@
 import { Modal } from './UI/Modal'
 // 모달 모듈 추가
-
+import { Map } from './UI/Map'
 class PlaceFinder {
     constructor() { // 생성자 함수
         const addressForm = document.querySelectorAll('form');
         const locateUserBtn = document.getElementById('locate-btn');
 
-        locateUserBtn.addEventListener("click", this.locateUserHandler);
-        // addressForm.addEventListener("submit", this.findAddressHandler);
+        locateUserBtn.addEventListener("click", this.locateUserHandler.bind(this));
+        //addressForm.addEventListener("submit", this.findAddressHandler.bind(this));
     }
 
+    selectPlace(coordinates) {
+        if (this.map) {
+            this.map.render(coordinates);
+        } else {
+            this.map = new Map(coordinates);
+        }
+
+    }
 
     locateUserHandler() {
         // 사용자 위치 얻기
@@ -29,7 +37,7 @@ class PlaceFinder {
                     lng: successResulut.coords.longitude
                 };
                 console.log(coordinates);
-
+                this.selectPlace(coordinates);
             }, error => {
                 modal.hide();
                 // 위치를 찾지 못할때
@@ -39,9 +47,7 @@ class PlaceFinder {
 
     }
 
-    findAddressHandler() {
-
-    }
+    //findAddressHandler()
 
 
 
