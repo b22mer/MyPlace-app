@@ -1,23 +1,28 @@
 import { Modal } from './UI/Modal'
 // 모달 모듈 추가
 import { Map } from './UI/Map'
-import { getCoordsFromAddress } from './Utility/Location'
+import { getCoordsFromAddress, getAddressFromCoords } from './Utility/Location'
 
 class PlaceFinder {
     constructor() { // 생성자 함수
         const addressForm = document.querySelector('form');
         const locateUserBtn = document.getElementById('locate-btn');
-
+        this.shareBtn = document.getElementById('share-btn');
         locateUserBtn.addEventListener("click", this.locateUserHandler.bind(this));
+        //  this.shareBtn.addEventListener('click')
         addressForm.addEventListener("submit", this.findAddressHandler.bind(this));
     }
 
-    selectPlace(coordinates) {
+    selectPlace(coordinates, address) {
         if (this.map) {
             this.map.render(coordinates);
         } else {
             this.map = new Map(coordinates);
         }
+
+        this.shareBtn.disabled = false;
+        const sharedLinkInputElement = document.getElementById('share-link');
+        sharedLinkInputElement.value = `${location.origin}/my-place?address=${encodeURI(address)}&lat=${coordinates.lat}&lng=${coordinates.lng}`;
 
     }
 
@@ -32,14 +37,16 @@ class PlaceFinder {
         modal.show();
         // 현재 위치 얻기
         navigator.geolocation.getCurrentPosition(
-            successResulut => {
-                modal.hide();
+            async successResulut => {
+
                 const coordinates = {
                     lat: successResulut.coords.latitude,
                     lng: successResulut.coords.longitude
                 };
-                console.log(coordinates);
-                this.selectPlace(coordinates);
+
+                const address = await getAddressFromCoords(coordinates);
+                modal.hide();
+                this.selectPlace(coordinates, address);
             }, error => {
                 modal.hide();
                 // 위치를 찾지 못할때
@@ -62,7 +69,7 @@ class PlaceFinder {
         // async, await 함수는 promise를 반환해!
         try {
             const coordinates = await getCoordsFromAddress(address);
-            this.selectPlace(coordinates);
+            this.selectPlace(coordinates, address);
         } catch (err) {
             alert(err.message);
         }
