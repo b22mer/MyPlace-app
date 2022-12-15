@@ -8,10 +8,30 @@ class PlaceFinder {
         const addressForm = document.querySelector('form');
         const locateUserBtn = document.getElementById('locate-btn');
         this.shareBtn = document.getElementById('share-btn');
+
         locateUserBtn.addEventListener("click", this.locateUserHandler.bind(this));
-        //  this.shareBtn.addEventListener('click')
+        this.shareBtn.addEventListener("click", this.sharePlaceHandler);
         addressForm.addEventListener("submit", this.findAddressHandler.bind(this));
     }
+
+    sharePlaceHandler() {
+        const sharedLinkInputElement = document.getElementById('share-link');
+        sharedLinkInputElement.select();
+
+        // 브라우저가 클립보드 기능이 적용되는지 확인
+        if (!navigator.clipboard) {
+            return;
+        }
+        navigator.clipboard.writeText(sharedLinkInputElement.value)
+            .then(() => {
+                //성공
+                alert("클립보드에 복사를 했습니다.")
+            }).catch(err => {
+                console.log(err);
+                sharedLinkInputElement.select();
+            });
+    }
+
 
     selectPlace(coordinates, address) {
         if (this.map) {
